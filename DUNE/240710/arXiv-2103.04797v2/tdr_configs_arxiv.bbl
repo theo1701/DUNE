@@ -1,0 +1,103 @@
+\begin{thebibliography}{10}
+
+\bibitem{Abi:2020evt}
+DUNE, B.~Abi {\em et~al.},
+\newblock (2020), 2002.03005.
+
+\bibitem{Abi:2020qib}
+DUNE, B.~Abi {\em et~al.},
+\newblock Eur. Phys. J. C {\bf 80}, 978 (2020), 2006.16043.
+
+\bibitem{globes1}
+P.~Huber, M.~Lindner, and W.~Winter,
+\newblock Comput.Phys.Commun. {\bf 167}, 195 (2005), hep-ph/0407333.
+
+\bibitem{globes2}
+P.~Huber, J.~Kopp, M.~Lindner, M.~Rolinec, and W.~Winter,
+\newblock Comput.Phys.Commun. {\bf 177}, 432 (2007), hep-ph/0701187.
+
+\bibitem{GEANT4:NIM}
+GEANT4, S.~Agostinelli {\em et~al.},
+\newblock Nucl. Instrum. Methods {\bf A}, 250 (2003).
+
+\bibitem{GEANT4}
+GEANT4, J.~Allison {\em et~al.},
+\newblock IEEE Trans. Nucl. Sci. {\bf 53}, 270 (2006).
+
+\bibitem{beamcdr}
+P.~Adamson {\em et~al.},
+\newblock The conceptual design report for the optimized neutrino beamline,
+  2017,
+\newblock \url{https://docs.dunescience.org/cgi-bin/ShowDocument?docid=4559}.
+
+\bibitem{pavlovic_thesis}
+{Z. Pavlovic},
+\newblock Dissertation: Measurement of neutrino oscillations with the
+  {M}{I}{N}{O}{S} detectors in the {N}u{M}{I} beam, 2009,
+\newblock \url{http://minos-docdb.fnal.gov/cgi-bin/ShowDocument?docid=5694}.
+
+\bibitem{lauraspage}
+\url{https://home.fnal.gov/~ljf26/DUNEFluxes/OptimizedEngineeredNov2017_offaxis/}.
+
+\bibitem{Andreopoulos:2009rq}
+C.~Andreopoulos {\em et~al.},
+\newblock Nucl. Instrum. Meth. {\bf A614}, 87 (2010), 0905.2517.
+
+\bibitem{Andreopoulos:2015wxa}
+C.~Andreopoulos {\em et~al.},
+\newblock (2015), 1510.05494.
+
+\bibitem{PhysRevC.72.019902}
+J.~Nieves, J.~E. Amaro, and M.~Valverde,
+\newblock Phys. Rev. C {\bf 72}, 019902 (2005).
+
+\bibitem{Rodrigues:2016xjj}
+P.~Rodrigues, C.~Wilkinson, and K.~McFarland,
+\newblock Eur. Phys. J. C {\bf 76}, 474 (2016), 1601.01888.
+
+\bibitem{Stowell:2016jfr}
+P.~Stowell {\em et~al.},
+\newblock JINST {\bf 12}, P01016 (2017), 1612.07393.
+
+\bibitem{Agostinelli:2002hh}
+GEANT4, S.~Agostinelli {\em et~al.},
+\newblock Nucl.\ Instrum.\ Meth.\ A {\bf 506}, 250 (2003).
+
+\bibitem{Marshall:2013bda}
+J.~Marshall and M.~Thomson,
+\newblock {Pandora Particle Flow Algorithm},
+\newblock in {\em {Proceedings, International Conference on Calorimetry for the
+  High Energy Frontier (CHEF 2013)}}, pp. 305--315, 2013, 1308.4537.
+
+\bibitem{Marshall:2012hh}
+J.~Marshall and M.~Thomson,
+\newblock J.Phys.Conf.Ser. {\bf 396}, 022034 (2012).
+
+\bibitem{Abi:2020xvt}
+DUNE, B.~Abi {\em et~al.},
+\newblock Phys. Rev. D {\bf 102}, 092003 (2020), 2006.15052.
+
+\bibitem{Esteban:2018azc}
+I.~Esteban, M.~C. Gonzalez-Garcia, A.~Hernandez-Cabezudo, M.~Maltoni, and
+  T.~Schwetz,
+\newblock JHEP {\bf 01}, 106 (2019), 1811.05487.
+
+\bibitem{nufitweb}
+I.~Esteban, M.~C. Gonzalez-Garcia, A.~Hernandez-Cabezudo, M.~Maltoni, and
+  T.~Schwetz,
+\newblock Nufit4.0, 2018.
+
+\bibitem{doi:10.1002/2016JB012887}
+W.~Shen and M.~H. Ritzwoller,
+\newblock Journal of Geophysical Research: Solid Earth {\bf 121}, 4306 (2016),
+  https://agupubs.onlinelibrary.wiley.com/doi/pdf/10.1002/2016JB012887.
+
+\bibitem{Roe:2017zdw}
+B.~Roe,
+\newblock Phys. Rev. {\bf D95}, 113004 (2017), 1707.02322.
+
+\bibitem{globesweb}
+GLoBES,
+\newblock \url{https://www.mpi-hd.mpg.de/personalhomes/globes/}.
+
+\end{thebibliography}
