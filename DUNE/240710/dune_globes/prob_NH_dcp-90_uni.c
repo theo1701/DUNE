@@ -27,7 +27,8 @@
 /***************************************************************************
  *                            M A I N   P R O G R A M                      *
  ***************************************************************************/
-char MYFILE[]="prob_NH_dcp-90_uni.dat"; // output
+// char MYFILE[]="prob_NH_dcp-90_uni.dat"; // output
+char MYFILE[] = "prob_group1.dat";
 int main(int argc, char *argv[])
 { 
 
@@ -56,7 +57,7 @@ int main(int argc, char *argv[])
   //                              NULL);
 
 
-  char AEDLFILE1[]="2018_nova_app1.46+1.14.glb" ;
+  char AEDLFILE1[]="DUNE_GLoBES.glb" ;
   glbInitExperiment(AEDLFILE1,&glb_experiment_list[0],&glb_num_of_exps) ; 
  
 
@@ -65,15 +66,15 @@ int main(int argc, char *argv[])
 ******************************/
 
 
-  double M_PI=3.1415926535;
+double M_PI_DEF = 3.1415926535;
   
   // Define standard oscillation parameters (cf. https://arxiv.org/pdf/1405.7540v3.pdf) 
-  double true_theta12 =asin(sqrt(0.310));
-  double true_theta13 = asin(sqrt(0.02237));
-  double true_theta23 = asin(sqrt(0.563));
-  double true_deltacp =-90*M_PI/180;
-  double true_sdm = 7.39e-5;
-  double true_ldm = 2.528e-3;
+double true_theta12 = asin(sqrt(0.310));
+double true_theta13 = asin(sqrt(0.02237));
+double true_theta23 = asin(sqrt(0.563));
+double true_deltacp = -90*M_PI_DEF/180;
+double true_sdm = 7.39e-5;
+double true_ldm = 2.528e-3;
 
 
 //   // Define Non-Unitary PARAMETERS
@@ -82,7 +83,7 @@ int main(int argc, char *argv[])
 // // Notice, for standard 3-nu oscillation alphaii=1 other zero.
 //   double true_alpha00 =1.0, true_alpha10 =0.0, true_alpha20 =0.0, true_alpha11 =1.0,true_alpha21 =0.0, true_alpha22 =1.0;
 // // PHASES
-//   double true_phi10 = 0.0*M_PI, true_phi20 =0.0, true_phi21 = 0.0;
+//   double true_phi10 = 0.0*M_PI_DEF, true_phi20 =0.0, true_phi21 = 0.0;
 
   /* Initialize parameter and projection vector(s) */
   glb_params true_values = glbAllocParams();
@@ -117,6 +118,8 @@ glbSetOscillationParameters(true_values);
   glbSetRates();
 double e;
 double p, q, r, s;
+
+// nu_1 is nu_e, nu_2 is nu_mu, and nu_3 is nu_tau
   for(e=0;e<=5;e +=.001)
   {
    
