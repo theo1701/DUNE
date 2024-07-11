@@ -28,7 +28,7 @@
  *                            M A I N   P R O G R A M                      *
  ***************************************************************************/
 // char MYFILE[]="prob_NH_dcp-90_uni.dat"; // output
-char MYFILE[] = "prob_group1.dat";
+char MYFILE[] = "prob_NH_dcp-90_uni_mubarmubar.dat";
 int main(int argc, char *argv[])
 { 
 
@@ -66,16 +66,22 @@ int main(int argc, char *argv[])
 ******************************/
 
 
-double M_PI_DEF = 3.1415926535;
-  
-  // Define standard oscillation parameters (cf. https://arxiv.org/pdf/1405.7540v3.pdf) 
-double true_theta12 = asin(sqrt(0.310));
-double true_theta13 = asin(sqrt(0.02237));
-double true_theta23 = asin(sqrt(0.563));
-double true_deltacp = -90*M_PI_DEF/180;
-double true_sdm = 7.39e-5;
-double true_ldm = 2.528e-3;
 
+double M_PI_DEF = 3.1415926535;
+
+// ------------------------
+// NH
+double true_theta12 = asin(sqrt(0.307));
+double true_theta13 = asin(sqrt(0.02224));
+double true_theta23 = asin(sqrt(0.454));
+double true_sdm = 7.41e-5; //dm21
+double true_ldm = 2.505e-3; //dm31
+
+// Define standard oscillation parameters (cf. https://arxiv.org/pdf/1405.7540v3.pdf) 
+// double true_theta12 = asin(sqrt(0.310));
+// double true_theta13 = asin(sqrt(0.02237));
+// double true_theta23 = asin(sqrt(0.563));
+double true_deltacp = -90*M_PI_DEF/180;
 
 //   // Define Non-Unitary PARAMETERS
 
@@ -117,24 +123,22 @@ glbSetDensityParams(true_values,1.0,GLB_ALL);
 glbSetOscillationParameters(true_values);
   glbSetRates();
 double e;
-double p, q, r, s;
+double p;
 
 // nu_1 is nu_e, nu_2 is nu_mu, and nu_3 is nu_tau
-  for(e=0;e<=5;e +=.001)
-  {
-   
- 
-    
-    
-p=glbProfileProbability(0,2, 1, +1,e);
-q=glbProfileProbability(0,2, 1, -1,e);
-r=glbProfileProbability(0,2, 2, +1,e); 
-s=glbProfileProbability(0,2, 2, -1,e);
-fprintf(outfile, "%g %g %g %g %g \n", e,p, q, r, s);
-
-      fprintf(stdout, "%g %g %g %g %g \n", e,p, q, r, s);
-    }
-    fprintf(outfile, "\n");
+for(e=0;e<=5;e +=.001)
+{
+p=glbProfileProbability(0,2, 2, -1,e);
+// q=glbProfileProbability(0,2, 1, -1,e);
+// r=glbProfileProbability(0,2, 2, +1,e); 
+// s=glbProfileProbability(0,2, 2, -1,e);
+// fprintf(outfile, "%g %g %g %g %g \n", e,p, q, r, s);
+fprintf(outfile, "%g, %g \n", e, p);
+fprintf(stdout, "%g, %g \n", e, p);
+}
+    //   fprintf(stdout, "%g %g %g %g %g \n", e,p, q, r, s);
+    // }
+    // fprintf(outfile, "\n");
   
   //fclose(outfile);
   

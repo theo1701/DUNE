@@ -28,7 +28,7 @@
  *                            M A I N   P R O G R A M                      *
  ***************************************************************************/
 // char MYFILE[]="prob_NH_dcp-90_uni.dat"; // output
-char MYFILE[] = "prob_NH_dcp-90_uni_mubarmubar.dat";
+char MYFILE[] = "prob_NH_dcp+90_uni_mubarmubar.dat";
 int main(int argc, char *argv[])
 { 
 
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
   //                              NULL);
 
 
-  char AEDLFILE1[]="2020_nova_app2.248+2.066.glb";
+  char AEDLFILE1[]="DUNE_GLoBES.glb" ;
   glbInitExperiment(AEDLFILE1,&glb_experiment_list[0],&glb_num_of_exps) ; 
  
 
@@ -81,7 +81,7 @@ double true_ldm = 2.505e-3; //dm31
 // double true_theta12 = asin(sqrt(0.310));
 // double true_theta13 = asin(sqrt(0.02237));
 // double true_theta23 = asin(sqrt(0.563));
-double true_deltacp = -90*M_PI_DEF/180;
+double true_deltacp = +90*M_PI_DEF/180;
 
 //   // Define Non-Unitary PARAMETERS
 
@@ -136,11 +136,6 @@ p=glbProfileProbability(0,2, 2, -1,e);
 fprintf(outfile, "%g, %g \n", e, p);
 fprintf(stdout, "%g, %g \n", e, p);
 }
-    //   fprintf(stdout, "%g %g %g %g %g \n", e,p, q, r, s);
-    // }
-    // fprintf(outfile, "\n");
-  
-  //fclose(outfile);
   
 
 /********************************
