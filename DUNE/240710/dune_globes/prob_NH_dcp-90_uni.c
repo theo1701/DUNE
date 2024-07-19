@@ -28,7 +28,7 @@
  *                            M A I N   P R O G R A M                      *
  ***************************************************************************/
 // char MYFILE[]="prob_NH_dcp-90_uni.dat"; // output
-char MYFILE[] = "prob_NH_dcp-90_uni_mubarmubar.dat";
+char MYFILE[] = "prob_NH_dcp-90_uni_LO_mubarebar.dat";
 int main(int argc, char *argv[])
 { 
 
@@ -73,7 +73,8 @@ double M_PI_DEF = 3.1415926535;
 // NH
 double true_theta12 = asin(sqrt(0.307));
 double true_theta13 = asin(sqrt(0.02224));
-double true_theta23 = asin(sqrt(0.454));
+// double true_theta23 = asin(sqrt(0.454));
+double true_theta23 = asin(sqrt(0.44));
 double true_sdm = 7.41e-5; //dm21
 double true_ldm = 2.505e-3; //dm31
 
@@ -126,9 +127,9 @@ double e;
 double p;
 
 // nu_1 is nu_e, nu_2 is nu_mu, and nu_3 is nu_tau
-for(e=0;e<=5;e +=.001)
+for(e=0;e<=10;e +=.001)
 {
-p=glbProfileProbability(0,2, 2, -1,e);
+p=glbProfileProbability(0,2, 1, -1,e);
 // q=glbProfileProbability(0,2, 1, -1,e);
 // r=glbProfileProbability(0,2, 2, +1,e); 
 // s=glbProfileProbability(0,2, 2, -1,e);
