@@ -1,7 +1,7 @@
 // Systematic uncertainties
 
-NUTIME = 6.5
-NUBARTIME = 6.5
+NUTIME = 5
+NUBARTIME = 5
 LAMASS = 40
 
 ERR_NUE_SIG = 0.02

@@ -34,7 +34,7 @@
 #include "myio.h"          /* my input-output routines */
 
 /* If filename given, write to file; for empty filename write to screen */
-char MYFILE[] = "dchsq_vs_dcptest+th23test_NHtrue_NOvA+T2Kbestfit_dcp+90_NHtest_DUNE5+5.dat";
+char MYFILE[] = "dchsq_vs_dcptest+th23test_IHtrue_NOvA+T2Kbestfit_dcp+90_NHtest_DUNE5+5.dat";
 
 int main(int argc, char *argv[])
 {
@@ -70,12 +70,12 @@ int main(int argc, char *argv[])
   // double m;
 
   double theta12 = asin(sqrt(0.307));
-  double theta13 = asin(sqrt(0.02224));
+  double theta13 = asin(sqrt(0.02222));
   double theta23 = asin(sqrt(0.5));
   double deltacp = +90 * M_PI / 180;
   double sdm = 7.41e-5; // used
-  // double atmdm = 2.505e-3;
-  double ldm = 2.505e-3;
+  double atmdm = -2.487e-3;
+  double ldm = atmdm + sdm;
   double m;
 
   /* Initialize parameter vector(s) */

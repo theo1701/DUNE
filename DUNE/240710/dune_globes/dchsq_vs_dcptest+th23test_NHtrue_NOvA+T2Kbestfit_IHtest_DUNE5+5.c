@@ -34,7 +34,7 @@
 #include "myio.h"          /* my input-output routines */
 
 /* If filename given, write to file; for empty filename write to screen */
-char MYFILE[] = "dchsq_vs_dcptest+th23test_NHtrue_NOvA+T2Kbestfit_dcp+90_NHtest_DUNE5+5.dat";
+char MYFILE[] = "dchsq_vs_dcptest+th23test_NHtrue_NOvA+T2Kbestfit_dcp+90_IHtest_DUNE5+5.dat";
 
 int main(int argc, char *argv[])
 {
@@ -74,7 +74,6 @@ int main(int argc, char *argv[])
   double theta23 = asin(sqrt(0.5));
   double deltacp = +90 * M_PI / 180;
   double sdm = 7.41e-5; // used
-  // double atmdm = 2.505e-3;
   double ldm = 2.505e-3;
   double m;
 
@@ -107,34 +106,37 @@ int main(int argc, char *argv[])
    glbInitExperiment("2019_T2K_5anu_app.glb",&glb_experiment_list[0],&glb_num_of_exps);
    glbInitExperiment("T2K_2018_5+5disapp.glb",&glb_experiment_list[0],&glb_num_of_exps);*/
 
-  double s = 0.00058; // (0.02397 - 0.02047) / 6
+  // double s = 0.00058; // (0.02397 - 0.02047) / 6
+  double s = 0.00062; // (0.02420 - 0.02049) / 6
   double a = 0.01e-3;
   //
   for (y = -180; y <= 180; y = y + 10)
   {
-    for (l = 0.41; l <= 0.61; l = l + 0.01)
+    for (l = 0.41; l <= 0.61; l = l + 0.01) // same range for NH and IH
     {
       m = 10000;
-      for (x = 0.02047; x <= 0.02397; x = x + s)
+      // for (x = 0.02047; x <= 0.02397; x = x + s) // NH
+      for (x = 0.02049; x <= 0.02420; x = x + s) // IH
       {
         // for (k = 2.32e-3 - 3 * a; k <= 2.32e-3 + 3.01 * a; k = k + a)
-        for (k = 2.426e-3; k <= 2.586e-3; k = k + a)
+        // for (k = 2.426e-3; k <= 2.586e-3; k = k + a) // NH
+        for (k = -2.566e-3; k <= -2.407e-3; k = k + a) // IH
         { /* Set vector of test values */
           thetheta23 = asin(sqrt(l));
           thedeltacp = y * M_PI / 180.0;
           thetheta13 = asin(sqrt(x));
-          // theatmdm = -k;
+          theatmdm = k;
           glbSetOscParams(deg_pos, thetheta23, GLB_THETA_23);
           glbSetOscParams(deg_pos, thedeltacp, GLB_DELTA_CP);
           glbSetOscParams(deg_pos, thetheta13, GLB_THETA_13);
-          // theldm = theatmdm + pow(cos(theta12), 2) * sdm - cos(thedeltacp) * sin(thetheta13) * sin(2 * theta12) * tan(thetheta23) * sdm;
-          theldm = k;
+          theldm = theatmdm + sdm;
           glbSetOscParams(deg_pos, theldm, GLB_DM_31);
 
           /* Compute Chi^2 for all loaded experiments and all rules */
           glbSwitchSystematics(GLB_ALL, GLB_ALL, GLB_ON);
           res = glbChiSys(deg_pos, GLB_ALL, GLB_ALL);
-          double prior13 = pow(((x - 0.02224) / s), 2);
+          // double prior13 = pow(((x - 0.02224) / s), 2); // NH
+          double prior13 = pow(((x - 0.02222) / s), 2); // IH
 
           res = res + prior13;
 
