@@ -41,8 +41,6 @@ exec_prefix = ${prefix}
 libdir = ${exec_prefix}/lib
 globesconf= $(exec_prefix)/bin/globes-config
 
-local_CFLAGS = -g -O4
-
 INCFLAGS:=$(shell $(globesconf) --include)
 local_LDFLAGS:=$(shell $(globesconf) --libs)
 local_LTLDFLAGS:=$(shell $(globesconf) --ltlibs)
@@ -53,7 +51,7 @@ BIN = example-tour example-static example1 example2 example3 example4 example5 e
 OBJ = example-tour.o example-tour-s.o example1.o example2.o example3.o example4.o \
       example5.o example6.o myio.o
 
-all: $(BIN)
+all: $(BIN) 
 
 example-tour: example-tour.o
 	gcc example-tour.o -o example-tour $(LDFLAGS) $(local_LDFLAGS)
@@ -102,6 +100,10 @@ dchsq_vs_dcptest+th23test_IHtrue_NOvA+T2Kbestfit_IHtest_DUNE5+5: dchsq_vs_dcptes
 
 dchsq_vs_dcptest+th23test_IHtrue_NOvA+T2Kbestfit_NHtest_DUNE5+5: dchsq_vs_dcptest+th23test_IHtrue_NOvA+T2Kbestfit_NHtest_DUNE5+5.o myio.o
 	gcc dchsq_vs_dcptest+th23test_IHtrue_NOvA+T2Kbestfit_NHtest_DUNE5+5.o myio.o -o dchsq_vs_dcptest+th23test_IHtrue_NOvA+T2Kbestfit_NHtest_DUNE5+5 $(LDFLAGS) $(local_LDFLAGS)
+
+prob_bestfit_NH_NOvA_mycode_aet_phiet-90: prob_bestfit_NH_NOvA_mycode_aet_phiet-90.o myio.o
+	gcc prob_bestfit_NH_NOvA_mycode_aet_phiet-90.o myio.o -o prob_bestfit_NH_NOvA_mycode_aet_phiet-90 $(LDFLAGS) $(local_LDFLAGS)
+
 %.o : %.c
 	gcc $(CFLAGS) $(local_CFLAGS) -c $< $(INCFLAGS)
 .PHONY: clean
