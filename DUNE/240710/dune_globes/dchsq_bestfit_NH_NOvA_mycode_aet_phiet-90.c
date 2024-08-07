@@ -16,7 +16,8 @@
 
 /* Output file */
 
-#define GLB_EPS_E_E 6
+#define GLB_EPS_E_T 6
+#define GLB_PHI_E_T 7
 
 // #define GLB_EPS_E_E 6
 // #define GLB_EPS_E_M 7           /* Index of non-standard parameter */
@@ -31,14 +32,14 @@
 double th12;
 double th13;
 double th23;
-double eps_e_e;
+// double eps_e_e;
 // double eps_e_m;
-// double eps_e_t;
+double eps_e_t;
 
 double dcp;
 
 // double phi_e_m;
-// double phi_e_t;
+double phi_e_t;
 
 double d21;
 double d31;
@@ -54,14 +55,14 @@ int my_set_oscillation_parameters(glb_params p, void *user_data)
   th12 = glbGetOscParams(p, GLB_THETA_12);
   th13 = glbGetOscParams(p, GLB_THETA_13);
   th23 = glbGetOscParams(p, GLB_THETA_23);
-  eps_e_e = glbGetOscParams(p, GLB_EPS_E_E);
+  // eps_e_e = glbGetOscParams(p, GLB_EPS_E_E);
   // eps_e_m   = glbGetOscParams(p, GLB_EPS_E_M);
-  // eps_e_t   = glbGetOscParams(p, GLB_EPS_E_T);
   dcp = glbGetOscParams(p, GLB_DELTA_CP);
   // phi_e_m    = glbGetOscParams(p, GLB_PHI_E_M);
-  // phi_e_t    = glbGetOscParams(p, GLB_PHI_E_T);
   d21 = glbGetOscParams(p, GLB_DM_21); /* Convert to GeV^2 */
   d31 = glbGetOscParams(p, GLB_DM_31); /* Convert to GeV^2 */
+  eps_e_t = glbGetOscParams(p, GLB_EPS_E_T);
+  phi_e_t = glbGetOscParams(p, GLB_PHI_E_T);
 
   return 0;
 }
@@ -74,15 +75,15 @@ int my_get_oscillation_parameters(glb_params p, void *user_data)
   glbSetOscParams(p, th12, GLB_THETA_12);
   glbSetOscParams(p, th13, GLB_THETA_13);
   glbSetOscParams(p, th23, GLB_THETA_23);
-  glbSetOscParams(p, eps_e_e, GLB_EPS_E_E);
+  // glbSetOscParams(p, eps_e_e, GLB_EPS_E_E);
   // glbSetOscParams(p, eps_e_m, GLB_EPS_E_M);
-  // glbSetOscParams(p, eps_e_t, GLB_EPS_E_T);
   glbSetOscParams(p, dcp, GLB_DELTA_CP);
 
   // glbSetOscParams(p, phi_e_m, GLB_PHI_E_M);
-  // glbSetOscParams(p, phi_e_t, GLB_PHI_E_T);
   glbSetOscParams(p, d21, GLB_DM_21); /* Convert to eV^2 */
   glbSetOscParams(p, d31, GLB_DM_31); /* Convert to eV^2 */
+  glbSetOscParams(p, eps_e_t, GLB_EPS_E_T);
+  glbSetOscParams(p, phi_e_t, GLB_PHI_E_T);
 
   return 0;
 }
@@ -172,15 +173,15 @@ int my_probability_matrix(double P[3][3], int cp_sign, double E, int psteps,
 
     Ve = cp_sign * 0.5 * 0.000076 * density[z]; // sqrt(2) * G_F * N_e
 
-    double complex eps00 = Ve * eps_e_e;
+    double complex eps00 = 0;
     double complex eps01 = 0;
-    double complex eps02 = 0;
-    
+    double complex eps02 = Ve * eps_e_t * cexp(I * phi_e_t);
+
     double complex eps10 = 0;
     double complex eps11 = 0;
     double complex eps12 = 0;
 
-    double complex eps20 = 0;
+    double complex eps20 = conj(eps02);
     double complex eps21 = 0;
     double complex eps22 = 0;
 
@@ -472,7 +473,10 @@ int zheevq3(double complex A[3][3], double complex Q[3][3], double w[3])
  ***************************************************************************/
 int main(int argc, char *argv[])
 {
-  char MYFILE[] = "prob_bestfit_IH_DUNE_nsi_ee-90.dat";
+  // char MYFILE[] = "dchsq_bestfit_NH_DUNE_nsi_epset7e-2_phiet0_IHtest_si.dat";
+  // char MYFILE[] = "dchsq_DUNE_bestfit_epset4e-2_NHtrue_phietrange_SI_IHtest_NSI.dat";
+  char MYFILE[] = "dchsq_DUNE_bestfit_epset4e-2_NHtrue_phiet0_NSI_IHtest_NSI_cp.dat";
+  // char MYFILE[] = "dchsq_DUNE_bestfit_epset1e-2_NHtrue_SI_IHtest_NSI.dat";
 
   // Initialise and define filename of output chains
   FILE *outfile = NULL;
@@ -488,7 +492,7 @@ int main(int argc, char *argv[])
   glbInit(argv[0]);
   // glbSelectMinimizer(GLB_MIN_POWELL);
 
-  glbRegisterProbabilityEngine(7, /* Number of parameters */
+  glbRegisterProbabilityEngine(8, /* Number of parameters */
                                &my_probability_matrix,
                                &my_set_oscillation_parameters,
                                &my_get_oscillation_parameters,
@@ -500,75 +504,151 @@ int main(int argc, char *argv[])
   /* Intitialize output */
 
   double my_M_PI = 3.1415926535;
-  
+  // Define standard oscillation parameters (cf. https://arxiv.org/pdf/1405.7540v3.pdf)
+  // double true_theta12 = asin(sqrt(0.304));
+  // double true_theta13 = asin(sqrt(0.02219));
+  // double true_theta23 = asin(sqrt(0.573));
+  // double true_deltacp = -90 * M_PI / 180;
+  // double true_sdm = 7.42e-5;
+  // double true_ldm = 2.517e-3;
+
   // 1606.05662 NH
+  double true_theta12 = 33.5 * my_M_PI / 180;
+  double true_theta13 = 8.5 * my_M_PI / 180;
+  double true_theta23 = 45 * my_M_PI / 180;
+  double true_sdm = 7.5e-5;
+  double true_ldm = 2.45e-3;
+  double ih_ldm = -2.46e-3;
+
+  // 1606.05662 IH
   // double true_theta12 = 33.5 * my_M_PI / 180;
   // double true_theta13 = 8.5 * my_M_PI / 180;
   // double true_theta23 = 45 * my_M_PI / 180;
   // double true_deltacp = -90 * my_M_PI / 180;
   // double true_sdm = 7.5e-5;
-  // double true_ldm = 2.45e-3;
+  // double true_ldm = -2.46e-3;
 
-  // 1606.05662 IH
-  double true_theta12 = 33.5 * my_M_PI / 180;
-  double true_theta13 = 8.5 * my_M_PI / 180;
-  double true_theta23 = 45 * my_M_PI / 180;
-  double true_deltacp = -90 * my_M_PI / 180;
-  double true_sdm = 7.5e-5;
-  double true_ldm = -2.46e-3;
+  /* normal */
+  double true_eps_e_t = 0.04;
+  double true_phi_e_t = 0.0;
 
-  // Define new PARAMETERS
-  // MODULUES
-  // Notice, for standard 3-nu oscillation alphaii=1 other zero.
-  // double eps_e_m = 0, eps_e_t = 2e-23, eps_e_e = 0;
-  // PHASES
-  // double phi_e_m = 0, phi_e_t = -M_PI / 2;
+  double min_chsq;
+  double res;
 
-  double eps_e_e = 0.7;
-
-  /* Initialize parameter and projection vector(s) */
-  glb_params true_values = glbAllocParams();
-  // glb_params test_values = glbAllocParams();
-  // glb_params output = glbAllocParams();
-  // glb_projection NSI_chi = glbAllocProjection();
-
-  /********************************
-       DECLARING TRUE
-  ******************************/
-
-  // Standard parameter
-  glbDefineParams(true_values, true_theta12, true_theta13, true_theta23, true_deltacp, true_sdm, true_ldm);
-
-  /*glbSetOscillationParameters(true_values);
-    glbSetRates();*/
-
-  // new parameters
-  glbSetOscParams(true_values, eps_e_e, GLB_EPS_E_E);
-  // glbSetOscParams(true_values, eps_e_m, GLB_EPS_E_M);
-  // glbSetOscParams(true_values, eps_e_t, GLB_EPS_E_T);
-  // glbSetOscParams(true_values, phi_e_m, GLB_PHI_E_M);
-  // glbSetOscParams(true_values, phi_e_t, GLB_PHI_E_T);
-
-  glbSetDensityParams(true_values, 1.0, GLB_ALL);
-  // fprintf(stdout, "%g %g \n", true_alpha00,true_alpha11);
-  /* Calculation of probability */
-  glbSetOscillationParameters(true_values);
-  glbSetRates();
-  double e;
-  double p, q, r, s;
-  for (e = 0; e <= 10; e += .001)
+  for (double true_deltacp = -my_M_PI; true_deltacp <= my_M_PI; true_deltacp += my_M_PI / 30)
   {
+    min_chsq = 1e10;
+    glb_params true_values = glbAllocParams();
+    glb_params test_values = glbAllocParams();
 
-    p = glbProfileProbability(0, 2, 1, +1, e);
-    // q=glbProfileProbability(0,2, 1, -1,e);
+    // define parameters
+    glbDefineParams(true_values, true_theta12, true_theta13, true_theta23, true_deltacp, true_sdm, true_ldm);
+    glbSetOscParams(true_values, true_eps_e_t, GLB_EPS_E_T);
+    glbSetOscParams(true_values, true_phi_e_t, GLB_PHI_E_T);
 
-    fprintf(outfile, "%g %g \n", e, p);
+    glbSetDensityParams(true_values, 1.0, GLB_ALL);
+    glbSetDensityParams(test_values, 1.0, GLB_ALL);
 
-    fprintf(stdout, "%g %g \n", e, p);
+    glbSetOscillationParameters(true_values);
+    glbSetRates();
+
+    // marginalization
+    for (double deltacp_test = -my_M_PI; deltacp_test <= my_M_PI; deltacp_test += my_M_PI / 5)
+    {
+      for (double test_eps_e_t = 0; test_eps_e_t <= 0.10; test_eps_e_t += 0.10 / 5)
+      {
+        for (double test_phi_e_t = -my_M_PI; test_phi_e_t <= my_M_PI; test_phi_e_t += my_M_PI / 5)
+        {
+          glbDefineParams(test_values, true_theta12, true_theta13, true_theta23, deltacp_test, true_sdm, ih_ldm);
+          glbSetOscParams(test_values, test_eps_e_t, GLB_EPS_E_T);
+          glbSetOscParams(test_values, test_phi_e_t, GLB_PHI_E_T);
+
+          glbSwitchSystematics(GLB_ALL, GLB_ALL, GLB_ON);
+          res = glbChiSys(test_values, GLB_ALL, GLB_ALL);
+
+          if (res < min_chsq)
+          {
+            min_chsq = res;
+          }
+        }
+      }
+    }
+
+    fprintf(stdout, "%lf %lf \n", true_deltacp, min_chsq);
+    fprintf(outfile, "%lf %lf \n", true_deltacp, min_chsq);
+
+    // Destroy parameter and projection vector(s)
+    glbFreeParams(true_values);
+    glbFreeParams(test_values);
   }
-  fprintf(outfile, "\n");
 
-  // fclose(outfile);
+  /* band */
+  // double true_eps_e_t = 0.04;
+
+  // double min_chsq, max_chsq;
+  // double res;
+
+  // for (double true_deltacp = -my_M_PI; true_deltacp <= my_M_PI; true_deltacp += my_M_PI / 30)
+  // {
+  //   double marg_min_chsq;
+  //   min_chsq = 1e10;
+  //   max_chsq = -1e10;
+  //   for (double true_phi_e_t = -my_M_PI; true_phi_e_t <= my_M_PI; true_phi_e_t += my_M_PI / 8)
+  //   {
+  //     marg_min_chsq = 1e10;
+  //     glb_params true_values = glbAllocParams();
+  //     glb_params test_values = glbAllocParams();
+
+  //     // define parameters
+  //     glbDefineParams(true_values, true_theta12, true_theta13, true_theta23, true_deltacp, true_sdm, true_ldm);
+  //     glbSetOscParams(true_values, true_eps_e_t, GLB_EPS_E_T);
+  //     glbSetOscParams(true_values, true_phi_e_t, GLB_PHI_E_T);
+
+  //     glbSetDensityParams(true_values, 1.0, GLB_ALL);
+  //     glbSetDensityParams(test_values, 1.0, GLB_ALL);
+
+  //     glbSetOscillationParameters(true_values);
+  //     glbSetRates();
+
+  //     // marginalization
+  //     for (double deltacp_test = -my_M_PI; deltacp_test <= my_M_PI; deltacp_test += my_M_PI / 5)
+  //     {
+  //       for (double test_eps_e_t = 0; test_eps_e_t <= 0.10; test_eps_e_t += 0.10 / 5)
+  //       {
+  //         for (double test_phi_e_t = -my_M_PI; test_phi_e_t <= my_M_PI; test_phi_e_t += my_M_PI / 5)
+  //         {
+  //           glbDefineParams(test_values, true_theta12, true_theta13, true_theta23, deltacp_test, true_sdm, ih_ldm);
+  //           glbSetOscParams(test_values, test_eps_e_t, GLB_EPS_E_T);
+  //           glbSetOscParams(test_values, test_phi_e_t, GLB_PHI_E_T);
+
+  //           glbSwitchSystematics(GLB_ALL, GLB_ALL, GLB_ON);
+  //           res = glbChiSys(test_values, GLB_ALL, GLB_ALL);
+
+  //           if (res < marg_min_chsq)
+  //           {
+  //             marg_min_chsq = res;
+  //           }
+  //         }
+  //       }
+  //     }
+
+  //     if (marg_min_chsq < min_chsq)
+  //     {
+  //       min_chsq = marg_min_chsq;
+  //     }
+  //     if (marg_min_chsq > max_chsq)
+  //     {
+  //       max_chsq = marg_min_chsq;
+  //     }
+
+  //     // Destroy parameter and projection vector(s)
+  //     glbFreeParams(true_values);
+  //     glbFreeParams(test_values);
+  //   }
+
+  //   fprintf(stdout, "%lf %lf %lf \n", true_deltacp, min_chsq, max_chsq);
+  //   fprintf(outfile, "%lf %lf %lf \n", true_deltacp, min_chsq, max_chsq);
+  // }
 
   /********************************
        DECLARING TEST
@@ -591,9 +671,6 @@ int main(int argc, char *argv[])
   glbSetOscParams(input_errors,0, GLB_ALPHA_21);
   glbSetOscParams(input_errors,0, GLB_PHI_21);
   glbSetOscParams(input_errors,0, GLB_ALPHA_22);*/
-
-  // Destroy parameter and projection vector(s)
-  glbFreeParams(true_values);
 
   exit(0);
 }
