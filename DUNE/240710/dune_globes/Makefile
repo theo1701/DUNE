@@ -104,6 +104,15 @@ dchsq_vs_dcptest+th23test_IHtrue_NOvA+T2Kbestfit_NHtest_DUNE5+5: dchsq_vs_dcptes
 prob_bestfit_NH_NOvA_mycode_aet_phiet-90: prob_bestfit_NH_NOvA_mycode_aet_phiet-90.o myio.o
 	gcc prob_bestfit_NH_NOvA_mycode_aet_phiet-90.o myio.o -o prob_bestfit_NH_NOvA_mycode_aet_phiet-90 $(LDFLAGS) $(local_LDFLAGS)
 
+dchsq_bestfit_NH_NOvA_mycode_aet_phiet-90: dchsq_bestfit_NH_NOvA_mycode_aet_phiet-90.o myio.o
+	gcc dchsq_bestfit_NH_NOvA_mycode_aet_phiet-90.o myio.o -o dchsq_bestfit_NH_NOvA_mycode_aet_phiet-90 $(LDFLAGS) $(local_LDFLAGS)
+
+dchsq_baseline: dchsq_baseline.o myio.o
+	gcc dchsq_baseline.o myio.o -o dchsq_baseline $(LDFLAGS) $(local_LDFLAGS)
+
+chsq_t2k+nova_bestfit_NSI(et)true_dcp_sin23_test: chsq_t2k+nova_bestfit_NSI(et)true_dcp_sin23_test.o myio.o
+	gcc chsq_t2k+nova_bestfit_NSI(et)true_dcp_sin23_test.o myio.o -o chsq_t2k+nova_bestfit_NSI(et)true_dcp_sin23_test $(LDFLAGS) $(local_LDFLAGS)
+	
 %.o : %.c
 	gcc $(CFLAGS) $(local_CFLAGS) -c $< $(INCFLAGS)
 .PHONY: clean
