@@ -16,8 +16,8 @@
 
 /* Output file */
 
-#define GLB_EPS_E_T 6
-#define GLB_PHI_E_T 7
+#define GLB_EPS_E_M 6
+#define GLB_PHI_E_M 7
 
 // #define GLB_EPS_E_E 6
 // #define GLB_EPS_E_M 7           /* Index of non-standard parameter */
@@ -34,12 +34,12 @@ double th13;
 double th23;
 // double eps_e_e;
 // double eps_e_m;
-double eps_e_t;
+double eps_e_m;
 
 double dcp;
 
 // double phi_e_m;
-double phi_e_t;
+double phi_e_m;
 
 double d21;
 double d31;
@@ -61,8 +61,8 @@ int my_set_oscillation_parameters(glb_params p, void *user_data)
   // phi_e_m    = glbGetOscParams(p, GLB_PHI_E_M);
   d21 = glbGetOscParams(p, GLB_DM_21); /* Convert to GeV^2 */
   d31 = glbGetOscParams(p, GLB_DM_31); /* Convert to GeV^2 */
-  eps_e_t = glbGetOscParams(p, GLB_EPS_E_T);
-  phi_e_t = glbGetOscParams(p, GLB_PHI_E_T);
+  eps_e_m = glbGetOscParams(p, GLB_EPS_E_M);
+  phi_e_m = glbGetOscParams(p, GLB_PHI_E_M);
 
   return 0;
 }
@@ -82,8 +82,8 @@ int my_get_oscillation_parameters(glb_params p, void *user_data)
   // glbSetOscParams(p, phi_e_m, GLB_PHI_E_M);
   glbSetOscParams(p, d21, GLB_DM_21); /* Convert to eV^2 */
   glbSetOscParams(p, d31, GLB_DM_31); /* Convert to eV^2 */
-  glbSetOscParams(p, eps_e_t, GLB_EPS_E_T);
-  glbSetOscParams(p, phi_e_t, GLB_PHI_E_T);
+  glbSetOscParams(p, eps_e_m, GLB_EPS_E_M);
+  glbSetOscParams(p, phi_e_m, GLB_PHI_E_M);
 
   return 0;
 }
@@ -174,14 +174,14 @@ int my_probability_matrix(double P[3][3], int cp_sign, double E, int psteps,
     Ve = cp_sign * 0.5 * 0.000076 * density[z]; // sqrt(2) * G_F * N_e
 
     double complex eps00 = 0;
-    double complex eps01 = 0;
-    double complex eps02 = Ve * eps_e_t * cexp(I * phi_e_t);
+    double complex eps01 = Ve * eps_e_m * cexp(I * phi_e_m);
+    double complex eps02 = 0;
 
-    double complex eps10 = 0;
+    double complex eps10 = conj(eps01);
     double complex eps11 = 0;
     double complex eps12 = 0;
 
-    double complex eps20 = conj(eps02);
+    double complex eps20 = 0;
     double complex eps21 = 0;
     double complex eps22 = 0;
 
@@ -473,7 +473,15 @@ int zheevq3(double complex A[3][3], double complex Q[3][3], double w[3])
  ***************************************************************************/
 int main(int argc, char *argv[])
 {
-  char MYFILE[] = "chsq_NOVA_bestfit_NSI_et=0.15,IH_true_dcp_sin23_IH_test.dat";
+
+  // Run config
+  char MYFILE[] = "prob_t2k+nova_bestfit_NSI_em_mubar_to_taubar(s23=0.5,eps_em=0.15,phi_em=+90,NH,dcp=+90).dat";
+  double hierachy = 1; // 1 for NH, -1 for IH
+  double parity = -1;   // 1 for neutrinos, -1 for anti-neutrinos
+  double true_theta23 = asin(sqrt(0.5));
+  double true_deltacp = +90 * M_PI / 180;
+  double true_eps_e_m = 0.15;
+  double true_phi_e_m = +90 * M_PI / 180;
 
   // Initialise and define filename of output chains
   FILE *outfile = NULL;
@@ -502,192 +510,41 @@ int main(int argc, char *argv[])
 
   double my_M_PI = 3.1415926535;
 
-  // NO case nu-fit
-  // double true_theta12 = asin(sqrt(0307));
-  // double true_theta13 = asin(sqrt(0.02224));
-  // double true_theta23 = asin(sqrt(0.454));
-  // double true_sdm = 7.41e-5;
-  // double true_ldm = 2.505e-3;
-
-  // double true_deltacp = 232 * my_M_PI / 180;
-
-  // https://arxiv.org/pdf/2003.08511
-  // T2K IO case
-  // double nh_theta12 = asin(sqrt(0.305));
-  // double true_theta13 = asin(sqrt(0.0219));
-  // double true_theta23 = asin(sqrt(0.5528));
-  // double true_sdm = 7.34e-5;
-  // double nh_ldm = 2.485e-3;
-
-  // double true_deltacp = 1.435 * my_M_PI;
-
-  // double true_ldm = -2.465e-3;
-  // double true_theta12 = asin(sqrt(0.303));
-
-  // https://arxiv.org/pdf/2003.08511
-  // NOVA IO case
-  double nh_theta12 = asin(sqrt(0.305));
-  double true_theta13 = asin(sqrt(0.0219));
-  double true_theta23 = asin(sqrt(0.448));
-  double true_sdm = 7.34e-5;
-  double nh_ldm = 2.485e-3;
-
-  double true_deltacp = 1.342 * my_M_PI;
-
-  double true_ldm = -2.465e-3;
-  double true_theta12 = asin(sqrt(0.303));
-
-  /* NSI */
-  double true_eps_e_t = 0.15;
-  double true_phi_e_t = 1.58 * my_M_PI;
-  
+  // Define standard oscillation parameters
+  double true_theta12, true_theta13, true_sdm, true_ldm;
+  if (hierachy == 1)
+  {
+    true_theta12 = asin(sqrt(0.307));
+    true_theta13 = asin(sqrt(0.2224));
+    true_sdm = 7.41e-5;
+    true_ldm = 2.505e-3;
+  } else if (hierachy == -1)
+  {
+    true_theta12 = asin(sqrt(0.307));
+    true_theta13 = asin(sqrt(0.2222));
+    true_sdm = 7.41e-5;
+    true_ldm = -2.487e-5;
+  }
 
   glb_params true_values = glbAllocParams();
-  glb_params test_values = glbAllocParams();
-  
+
   glbDefineParams(true_values, true_theta12, true_theta13, true_theta23, true_deltacp, true_sdm, true_ldm);
-  glbSetOscParams(true_values, true_eps_e_t, GLB_EPS_E_T);
-  glbSetOscParams(true_values, true_phi_e_t, GLB_PHI_E_T);
+  glbSetDensityParams(true_values, 1.0, GLB_ALL);
+  glbSetOscParams(true_values, true_eps_e_m, GLB_EPS_E_M);
+  glbSetOscParams(true_values, true_phi_e_m, GLB_PHI_E_M);
   glbSetOscillationParameters(true_values);
   glbSetRates();
 
-  double test_deltacp, test_sin23, marg_eps_e_t, marg_phi_e_t;
-  double m, res;
+  double e, p;
 
-  double sigma_theta13 = 0.034 * 0.0219;
-
-  for (double test_deltacp = -180; test_deltacp <= 180; test_deltacp += 5)
-  {
-    for (double test_sin23 = 0.35; test_sin23 <= 0.70; test_sin23 += 0.01)
-    {
-      m = 1e10;
-      for (double marg_eps_e_t = 0; marg_eps_e_t <= 1; marg_eps_e_t += 0.05)
-      {
-        for (double marg_phi_e_t = -180; marg_phi_e_t <= 180; marg_phi_e_t += 12)
-        {
-          for (double marg_theta13 = 0.0219 - 3 * sigma_theta13; marg_theta13 <= 0.0219 + 3 * sigma_theta13; marg_theta13 += sigma_theta13)
-          {
-            double thetheta23 = asin(sqrt(test_sin23));
-            double thedeltacp = test_deltacp * my_M_PI / 180;
-            double themarg_phi_e_t = marg_phi_e_t * my_M_PI / 180;
-            double thetheta13 = asin(sqrt(marg_theta13));
-            // glbDefineParams(test_values, nh_theta12, thetheta13, thetheta23, thedeltacp, true_sdm, nh_ldm); // NH
-            glbDefineParams(test_values, true_theta12, thetheta13, thetheta23, thedeltacp, true_sdm, true_ldm); // IH
-            glbSetDensityParams(test_values, 1.0, GLB_ALL);
-            glbSetOscParams(test_values, marg_eps_e_t, GLB_EPS_E_T);
-            glbSetOscParams(test_values, themarg_phi_e_t, GLB_PHI_E_T);
-
-            glbSwitchSystematics(GLB_ALL, GLB_ALL, GLB_ON);
-            res = glbChiSys(test_values, GLB_ALL, GLB_ALL);
-            double prior13 = pow(((marg_theta13 - 0.0219) / sigma_theta13), 2);
-
-            res += prior13;
-
-            if (res < m)
-            {
-              m = res;
-            }
-          }
-        }
-      }
-      fprintf(stdout, "%lf %lf %lf \n", test_deltacp, test_sin23, m);
-      fprintf(outfile, "%lf %lf %lf \n", test_deltacp, test_sin23, m);
-    }
+  // nu_1 is nu_e, nu_2 is nu_mu, and nu_3 is nu_tau
+  for (e = 0; e <= 10; e += .005) {
+    p = glbProfileProbability(0, 2, 3, parity, e);
+    fprintf(outfile, "%g %g\n", e, p);
+    fprintf(stdout, "%g %g\n", e, p);
   }
 
-
   glbFreeParams(true_values);
-  glbFreeParams(test_values);
-
-  /* band */
-  // double true_eps_e_t = 0.04;
-
-  // double min_chsq, max_chsq;
-  // double res;
-
-  // for (double true_deltacp = -my_M_PI; true_deltacp <= my_M_PI; true_deltacp += my_M_PI / 30)
-  // {
-  //   double marg_min_chsq;
-  //   min_chsq = 1e10;
-  //   max_chsq = -1e10;
-  //   for (double true_phi_e_t = -my_M_PI; true_phi_e_t <= my_M_PI; true_phi_e_t += my_M_PI / 8)
-  //   {
-  //     marg_min_chsq = 1e10;
-  //     glb_params true_values = glbAllocParams();
-  //     glb_params test_values = glbAllocParams();
-
-  //     // define parameters
-  //     glbDefineParams(true_values, true_theta12, true_theta13, true_theta23, true_deltacp, true_sdm, true_ldm);
-  //     glbSetOscParams(true_values, true_eps_e_t, GLB_EPS_E_T);
-  //     glbSetOscParams(true_values, true_phi_e_t, GLB_PHI_E_T);
-
-  //     glbSetDensityParams(true_values, 1.0, GLB_ALL);
-  //     glbSetDensityParams(test_values, 1.0, GLB_ALL);
-
-  //     glbSetOscillationParameters(true_values);
-  //     glbSetRates();
-
-  //     // marginalization
-  //     for (double deltacp_test = -my_M_PI; deltacp_test <= my_M_PI; deltacp_test += my_M_PI / 5)
-  //     {
-  //       for (double test_eps_e_t = 0; test_eps_e_t <= 0.10; test_eps_e_t += 0.10 / 5)
-  //       {
-  //         for (double test_phi_e_t = -my_M_PI; test_phi_e_t <= my_M_PI; test_phi_e_t += my_M_PI / 5)
-  //         {
-  //           glbDefineParams(test_values, true_theta12, true_theta13, true_theta23, deltacp_test, true_sdm, ih_ldm);
-  //           glbSetOscParams(test_values, test_eps_e_t, GLB_EPS_E_T);
-  //           glbSetOscParams(test_values, test_phi_e_t, GLB_PHI_E_T);
-
-  //           glbSwitchSystematics(GLB_ALL, GLB_ALL, GLB_ON);
-  //           res = glbChiSys(test_values, GLB_ALL, GLB_ALL);
-
-  //           if (res < marg_min_chsq)
-  //           {
-  //             marg_min_chsq = res;
-  //           }
-  //         }
-  //       }
-  //     }
-
-  //     if (marg_min_chsq < min_chsq)
-  //     {
-  //       min_chsq = marg_min_chsq;
-  //     }
-  //     if (marg_min_chsq > max_chsq)
-  //     {
-  //       max_chsq = marg_min_chsq;
-  //     }
-
-  //     // Destroy parameter and projection vector(s)
-  //     glbFreeParams(true_values);
-  //     glbFreeParams(test_values);
-  //   }
-
-  //   fprintf(stdout, "%lf %lf %lf \n", true_deltacp, min_chsq, max_chsq);
-  //   fprintf(outfile, "%lf %lf %lf \n", true_deltacp, min_chsq, max_chsq);
-  // }
-
-  /********************************
-       DECLARING TEST
-  ******************************/
-  // glbCopyParams(true_values,test_values);
-
-  /********************************
-       DECLARING ERROR
-  ******************************/
-  /*glb_params input_errors = glbAllocParams();
-  glbDefineParams(input_errors,0,0.0026,0,0, 0,0);
-  glbSetDensityParams(input_errors,0.05,GLB_ALL);
-// Non-unitary parameters
-  glbSetOscParams(input_errors,0, GLB_ALPHA_00);
-  glbSetOscParams(input_errors,0, GLB_ALPHA_10);
-  glbSetOscParams(input_errors,0, GLB_PHI_10);
-  glbSetOscParams(input_errors,0, GLB_ALPHA_20);
-  glbSetOscParams(input_errors,0, GLB_PHI_20);
-  glbSetOscParams(input_errors,0, GLB_ALPHA_11);
-  glbSetOscParams(input_errors,0, GLB_ALPHA_21);
-  glbSetOscParams(input_errors,0, GLB_PHI_21);
-  glbSetOscParams(input_errors,0, GLB_ALPHA_22);*/
 
   exit(0);
 }

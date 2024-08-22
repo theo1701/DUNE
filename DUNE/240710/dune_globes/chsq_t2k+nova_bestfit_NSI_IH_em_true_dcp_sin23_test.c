@@ -473,7 +473,7 @@ int zheevq3(double complex A[3][3], double complex Q[3][3], double w[3])
  ***************************************************************************/
 int main(int argc, char *argv[])
 {
-  char MYFILE[] = "chsq_t2k_bestfit_NSI_em=0.15,IH_true_dcp_sin23_NH_test.dat";
+  char MYFILE[] = "chsq_nova_bestfit_NSI_em=0.02,IH_true_dcp_sin23_IH_test.dat";
 
   // Initialise and define filename of output chains
   FILE *outfile = NULL;
@@ -511,15 +511,28 @@ int main(int argc, char *argv[])
 
   // double true_deltacp = 232 * my_M_PI / 180;
 
+  // // https://arxiv.org/pdf/2003.08511
+  // // T2K IO case
+  // double nh_theta12 = asin(sqrt(0.305));
+  // double true_theta13 = asin(sqrt(0.0219));
+  // double true_theta23 = asin(sqrt(0.554));
+  // double true_sdm = 7.34e-5;
+  // double nh_ldm = 2.485e-3;
+
+  // double true_deltacp = 1.500 * my_M_PI;
+
+  // double true_ldm = -2.465e-3;
+  // double true_theta12 = asin(sqrt(0.303));
+
   // https://arxiv.org/pdf/2003.08511
-  // IO case
+  // NOVA IO case
   double nh_theta12 = asin(sqrt(0.305));
   double true_theta13 = asin(sqrt(0.0219));
-  double true_theta23 = asin(sqrt(0.554));
+  double true_theta23 = asin(sqrt(0.560));
   double true_sdm = 7.34e-5;
   double nh_ldm = 2.485e-3;
 
-  double true_deltacp = 1.500 * my_M_PI;
+  double true_deltacp = 1.515 * my_M_PI;
 
   double true_ldm = -2.465e-3;
   double true_theta12 = asin(sqrt(0.303));
@@ -566,8 +579,8 @@ int main(int argc, char *argv[])
             double thedeltacp = test_deltacp * my_M_PI / 180;
             double themarg_phi_e_m = marg_phi_e_m * my_M_PI / 180;
             double thetheta13 = asin(sqrt(marg_theta13));
-            glbDefineParams(test_values, nh_theta12, thetheta13, thetheta23, thedeltacp, true_sdm, nh_ldm); // NH
-            // glbDefineParams(test_values, true_theta12, thetheta13, thetheta23, thedeltacp, true_sdm, true_ldm); // IH
+            // glbDefineParams(test_values, nh_theta12, thetheta13, thetheta23, thedeltacp, true_sdm, nh_ldm); // NH
+            glbDefineParams(test_values, true_theta12, thetheta13, thetheta23, thedeltacp, true_sdm, true_ldm); // IH
             glbSetDensityParams(test_values, 1.0, GLB_ALL);
             glbSetOscParams(test_values, marg_eps_e_m, GLB_EPS_E_M);
             glbSetOscParams(test_values, themarg_phi_e_m, GLB_PHI_E_M);
