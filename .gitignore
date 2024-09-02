@@ -1,5 +1,6 @@
-*
-!/**/
-!*.c
-!*.h
-!*.ipynb
+*.pdf
+*.png
+*.zip
+*.out
+*.o
+*.sh

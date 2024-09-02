@@ -475,12 +475,12 @@ int main(int argc, char *argv[])
 {
 
   // Run config
-  char MYFILE[] = "prob_t2k+nova_bestfit_NSI_em_mubar_to_taubar(s23=0.5,eps_em=0.15,phi_em=+90,NH,dcp=+90).dat";
-  double hierachy = 1; // 1 for NH, -1 for IH
+  char MYFILE[] = "prob_t2k+nova_bestfit_NSI_em_mubar_to_taubar(s23=0.45,eps_em=0.02,phi_em=+90,IH,dcp=+90).dat";
+  double hierachy = -1; // 1 for NH, -1 for IH
   double parity = -1;   // 1 for neutrinos, -1 for anti-neutrinos
-  double true_theta23 = asin(sqrt(0.5));
+  double true_theta23 = asin(sqrt(0.45));
   double true_deltacp = +90 * M_PI / 180;
-  double true_eps_e_m = 0.15;
+  double true_eps_e_m = 0.02;
   double true_phi_e_m = +90 * M_PI / 180;
 
   // Initialise and define filename of output chains

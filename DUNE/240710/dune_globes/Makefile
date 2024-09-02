@@ -125,6 +125,9 @@ chsq_t2k+nova_bestfit_NSI_IH_et_true_dcp_sin23_test: chsq_t2k+nova_bestfit_NSI_I
 prob_t2k+nova_bestfit_NSI_em_mu_to_tau: prob_t2k+nova_bestfit_NSI_em_mu_to_tau.o myio.o
 	gcc prob_t2k+nova_bestfit_NSI_em_mu_to_tau.o myio.o -o prob_t2k+nova_bestfit_NSI_em_mu_to_tau $(LDFLAGS) $(local_LDFLAGS)
 
+prob_t2k+nova_bestfit_NSI_et_mu_to_tau: prob_t2k+nova_bestfit_NSI_et_mu_to_tau.o myio.o
+	gcc prob_t2k+nova_bestfit_NSI_et_mu_to_tau.o myio.o -o prob_t2k+nova_bestfit_NSI_et_mu_to_tau $(LDFLAGS) $(local_LDFLAGS)
+
 %.o : %.c
 	gcc $(CFLAGS) $(local_CFLAGS) -c $< $(INCFLAGS)
 .PHONY: clean

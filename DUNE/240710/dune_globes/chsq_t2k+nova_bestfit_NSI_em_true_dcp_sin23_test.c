@@ -473,7 +473,7 @@ int zheevq3(double complex A[3][3], double complex Q[3][3], double w[3])
  ***************************************************************************/
 int main(int argc, char *argv[])
 {
-  char MYFILE[] = "chsq_t2k_bestfit_NSI_em=0.15,NH_true_dcp_sin23_IH_test.dat";
+  char MYFILE[] = "chsq_nova_bestfit_NSI_em=0.15,NH_true_dcp_sin23_IH_test.dat";
 
   // Initialise and define filename of output chains
   FILE *outfile = NULL;
@@ -512,14 +512,27 @@ int main(int argc, char *argv[])
   // double true_deltacp = 232 * my_M_PI / 180;
 
   // https://arxiv.org/pdf/2003.08511
-  // NO case
+  // T2K
+  // double true_theta12 = asin(sqrt(0.305));
+  // double true_theta13 = asin(sqrt(0.0219));
+  // double true_theta23 = asin(sqrt(0.555));
+  // double true_sdm = 7.34e-5;
+  // double true_ldm = 2.485e-3;
+
+  // double true_deltacp = 1.478 * my_M_PI;
+
+  // double ih_ldm = -2.465e-3;
+  // double ih_theta12 = asin(sqrt(0.303));
+
+  // https://arxiv.org/pdf/2003.08511
+  // NOVA
   double true_theta12 = asin(sqrt(0.305));
   double true_theta13 = asin(sqrt(0.0219));
-  double true_theta23 = asin(sqrt(0.555));
+  double true_theta23 = asin(sqrt(0.450));
   double true_sdm = 7.34e-5;
   double true_ldm = 2.485e-3;
 
-  double true_deltacp = 1.478 * my_M_PI;
+  double true_deltacp = 1.674 * my_M_PI;
 
   double ih_ldm = -2.465e-3;
   double ih_theta12 = asin(sqrt(0.303));
