@@ -128,6 +128,18 @@ prob_t2k+nova_bestfit_NSI_em_mu_to_tau: prob_t2k+nova_bestfit_NSI_em_mu_to_tau.o
 prob_t2k+nova_bestfit_NSI_et_mu_to_tau: prob_t2k+nova_bestfit_NSI_et_mu_to_tau.o myio.o
 	gcc prob_t2k+nova_bestfit_NSI_et_mu_to_tau.o myio.o -o prob_t2k+nova_bestfit_NSI_et_mu_to_tau $(LDFLAGS) $(local_LDFLAGS)
 
+chsq_nu-fit_NH_SI_true_NSI_ee_test: chsq_nu-fit_NH_SI_true_NSI_ee_test.o myio.o
+	gcc chsq_nu-fit_NH_SI_true_NSI_ee_test.o myio.o -o chsq_nu-fit_NH_SI_true_NSI_ee_test $(LDFLAGS) $(local_LDFLAGS)
+
+chsq_nu-fit_NH_SI_true_NSI_mumu_test: chsq_nu-fit_NH_SI_true_NSI_mumu_test.o myio.o
+	gcc chsq_nu-fit_NH_SI_true_NSI_mumu_test.o myio.o -o chsq_nu-fit_NH_SI_true_NSI_mumu_test $(LDFLAGS) $(local_LDFLAGS)
+
+chsq_nu-fit_NH_SI_true_NSI_tt_test: chsq_nu-fit_NH_SI_true_NSI_tt_test.o myio.o
+	gcc chsq_nu-fit_NH_SI_true_NSI_tt_test.o myio.o -o chsq_nu-fit_NH_SI_true_NSI_tt_test $(LDFLAGS) $(local_LDFLAGS)
+
+chsq_nu-fit_NH_SI_true_NSI_em_test: chsq_nu-fit_NH_SI_true_NSI_em_test.o myio.o
+	gcc chsq_nu-fit_NH_SI_true_NSI_em_test.o myio.o -o chsq_nu-fit_NH_SI_true_NSI_em_test $(LDFLAGS) $(local_LDFLAGS)
+
 %.o : %.c
 	gcc $(CFLAGS) $(local_CFLAGS) -c $< $(INCFLAGS)
 .PHONY: clean
